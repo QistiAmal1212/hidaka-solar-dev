@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
                     {/* Company Info */}
                     <div className="md:col-span-2">
                         <div className="flex items-center mb-4">
-                            <img src="hidaka1.jpeg" alt="HIDAKA COMMUNICATION Logo" className="h-12 w-auto mr-4" />
+                            <img src="/img/hidaka1.jpeg" alt="HIDAKA COMMUNICATION Logo" className="h-12 w-auto mr-4" />
                             <span className="font-bold text-white text-lg">Hidaka Communication (M) Sdn Bhd</span>
                         </div>
                         <p className="max-w-md">
