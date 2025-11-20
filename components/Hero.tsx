@@ -1,5 +1,16 @@
 import React, { useState } from 'react';
 
+const WHATSAPP_RECIPIENT = '01154071220';
+
+// WhatsApp expects international phone numbers without the leading zero.
+const formatNumberForWhatsApp = (phone: string) => {
+  const digitsOnly = phone.replace(/\D/g, '');
+  if (!digitsOnly) {
+    return '';
+  }
+  return digitsOnly.startsWith('0') ? `60${digitsOnly.slice(1)}` : digitsOnly;
+};
+
 const Hero: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -16,7 +27,30 @@ const Hero: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form Submitted:', formData);
+    const submittedPhone = formData.phone.trim() || 'Not provided';
+    const submittedMessage = formData.message.trim();
+    const whatsappBodyLines = [
+      'New solar inquiry from the Hidaka Communication site:',
+      `Name: ${formData.name}`,
+      `Email: ${formData.email}`,
+      `Phone: ${submittedPhone}`
+    ];
+
+    if (submittedMessage) {
+      whatsappBodyLines.push(`Message: ${submittedMessage}`);
+    }
+
+    const whatsappText = encodeURIComponent(whatsappBodyLines.join('\n'));
+    const formattedNumber = formatNumberForWhatsApp(WHATSAPP_RECIPIENT);
+
+    if (formattedNumber) {
+      const whatsappUrl = `https://wa.me/${formattedNumber}?text=${whatsappText}`;
+      const newWindow = window.open(whatsappUrl, '_blank');
+      if (!newWindow) {
+        window.location.href = whatsappUrl;
+      }
+    }
+
     setSubmitted(true);
   };
 
@@ -38,7 +72,7 @@ const Hero: React.FC = () => {
         
         <div className="flex flex-col items-center text-center">
            <img 
-              src="/img/hidaka1.jpeg"
+              src="https://wkklbbvoxdytnzvtsyff.supabase.co/storage/v1/object/public/test/Screenshot_2025-11-11_at_8.56.26_AM-removebg-preview.png"
               alt="HIDAKA COMMUNICATION Logo"
               className="h-28 w-auto mb-6 animate-fade-in-down [filter:drop-shadow(0_0_5px_rgba(255,255,255,0.8))_drop-shadow(0_0_10px_rgba(255,255,255,0.6))]"
             />
